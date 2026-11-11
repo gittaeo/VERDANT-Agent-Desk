@@ -104,7 +104,7 @@ npm run install:ci
 npm run build
 ```
 
-57개 자동 테스트: 기존 국내 주식 데이터·뉴스·수급 검증과 에이전트 이벤트, 취소, 누락값, 켈리 상한, 모델 근거 ID, 모델 실패, 왕복 수수료, 시세 장애, 원장 재시작 복구, 요청 출처·크기 제한, 세계 정보 서버의 빈 응답 처리를 포함합니다.
+58개 자동 테스트: 기존 국내 주식 데이터·뉴스·수급 검증과 에이전트 이벤트, 취소, 누락값, 켈리 상한, 모델 근거 ID, 모델 실패, 왕복 수수료, 시세 장애, 원장 재시작 복구, 요청 출처·크기 제한, 세계 정보 서버의 빈 응답 처리를 포함합니다.
 
 ## 현재 한계와 다음 개발
 
@@ -119,3 +119,4 @@ npm run build
 [트레이딩 팀 역할 분리 가이드](https://lazyowen.com/guides/grok-bot-trading-team-setup)의 역할 분리·모의 운영 아이디어를 참고해 구현했습니다. Grok 앱을 원격 제어하는 제품이 아니며 프롬프트 원문이나 외부 프로젝트 코드를 복사하지 않았습니다.
 
 [DEX Screener API](https://docs.dexscreener.com/api/reference) · [Ollama API](https://docs.ollama.com/api/introduction) · [Worldmonitor](https://github.com/koala73/worldmonitor)
+

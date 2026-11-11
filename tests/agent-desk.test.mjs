@@ -41,6 +41,18 @@ test('Failed LLM never overwrites deterministic result',async()=>{
   const result=await runDesk({llm:{provider:'ollama',model:'test'},fetcher:async url=>String(url).includes('dexscreener')?response({pairs:[pair]}):new Response('',{status:500})});
   assert.equal(result.candidates.length,1);assert.equal(result.reviews.filter(r=>r.status==='failed').length,3);assert.equal(result.paper.cash,1000);
 });
+test('Counter review receives prior interpretation while preserving original evidence citations',async()=>{
+  const prompts=[];
+  const result=await runDesk({llm:{provider:'ollama',model:'test'},fetcher:async(url,options)=>{
+    if(String(url).includes('dexscreener'))return response({pairs:[pair]});
+    prompts.push(JSON.parse(options.body).messages);
+    return response({message:{content:JSON.stringify({summary:'자료 부족 · 재확인 필요',evidenceIds:['E1']})}});
+  }});
+  assert.equal(prompts.length,3);assert.match(prompts[1][0].content,/반대 근거/);
+  assert.ok(JSON.parse(prompts[1][1].content).some(e=>e.kind==='agent_review'));
+  assert.equal(result.evidence.filter(e=>e.kind==='agent_review').length,3);
+  await assert.rejects(reviewEvidence({role:'CHIEF',config:{provider:'ollama',model:'test'},evidence:[{id:'R1',kind:'agent_review',value:'unverified'}],fetcher:async()=>response({message:{content:JSON.stringify({summary:'unsupported',evidenceIds:['R1']})}})}),/근거/);
+});
 test('Paper observation includes both fees and closes on independent risk rule',async()=>{
   const fetcher=async()=>response({pairs:[pair]});
   const opened=await updateLedger(newLedger(),{type:'observe',chain:pair.chainId,pair:pair.pairAddress,name:'TEST',dollars:50},{fetcher});
