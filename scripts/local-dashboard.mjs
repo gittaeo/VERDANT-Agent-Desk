@@ -4,11 +4,14 @@ import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join, resolve } from 'node:path';
 import { runResearch, ResearchError } from '../lib/market-research.mjs';
+import {createAgentRuntime} from './agent-runtime.mjs';
+import {modelProfiles} from '../lib/model-config.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
+try{process.loadEnvFile(join(root,'.env.local'))}catch(error){if(error.code!=='ENOENT')throw error}
 const port = Number(process.env.VERDANT_PORT || 5177);
 const keyPath = resolve(root, '..', 'DART API.txt');
-const key = existsSync(keyPath) ? readFileSync(keyPath, 'utf8').trim() : '';
+const key = process.env.DART_API_KEY || (existsSync(keyPath) ? readFileSync(keyPath, 'utf8').trim() : '');
 const krxPath = ['KRX API.txt','KPX API.txt'].map(name=>resolve(root,'..',name)).find(path=>existsSync(path));
 const krxKey = process.env.KRX_API_KEY || (krxPath ? readFileSync(krxPath,'utf8').trim() : '');
 let newsConfig={};
@@ -19,7 +22,13 @@ let kisConfig={};
 try{kisConfig=JSON.parse(readFileSync(resolve(root,'..','KIS API.json'),'utf8').replace(/^\uFEFF/,''))}catch{}
 const kisAppKey=process.env.KIS_APP_KEY||kisConfig.appKey;
 const kisAppSecret=process.env.KIS_APP_SECRET||kisConfig.appSecret;
+const agents=createAgentRuntime({root,stockConfig:{key,krxKey,kisAppKey,kisAppSecret,newsClientId,newsClientSecret},profiles:modelProfiles(process.env),worldmonitorUrl:process.env.VERDANT_WORLDMONITOR_URL});
 const files = new Map([
+  ['/agents', ['web/agents.html','text/html; charset=utf-8']],
+  ['/agents.css', ['public/agents.css','text/css; charset=utf-8']],
+  ['/agents.js', ['public/agents.js','application/javascript; charset=utf-8']],
+  ['/agent-views.js', ['public/agent-views.js','application/javascript; charset=utf-8']],
+  ['/agent-views.css', ['public/agent-views.css','text/css; charset=utf-8']],
   ['/', ['web/index.html','text/html; charset=utf-8']],
   ['/refined.js', ['public/refined.js','application/javascript; charset=utf-8']],
   ['/refined.css', ['public/refined.css','text/css; charset=utf-8']],
@@ -32,6 +41,7 @@ const files = new Map([
 const server = createServer(async (req,res) => {
   if (![`127.0.0.1:${port}`,`localhost:${port}`].includes(req.headers.host)) { res.writeHead(403).end(); return; }
   const url = new URL(req.url, `http://${req.headers.host}`);
+  if(await agents.handle(req,res,url))return;
   const send = (status,data) => { res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'}); res.end(JSON.stringify(data)); };
   if (req.method === 'GET' && url.pathname === '/api/status') { const newsHealth=await checkNewsConnection({clientId:newsClientId,clientSecret:newsClientSecret});send(200,{dart:/^[a-zA-Z0-9]{40}$/.test(key),krxConfigured:Boolean(krxKey),newsConfigured:Boolean(newsClientId&&newsClientSecret),investorConfigured:Boolean(kisAppKey&&kisAppSecret),prices:false,news:newsHealth.status==='available',newsHealth,intraday:false,execution:'local'});return; }
   if (req.method === 'POST' && url.pathname === '/api/research') {
