@@ -205,4 +205,3 @@ reducedMotion.addEventListener('change',()=>{if(reducedMotion.matches){for(const
 applyZoom();renderPanels();updateActors();requestAnimationFrame(animate);
 window.dispatchEvent(new Event('verdant:office-ready'));
 if(location.pathname==='/office')toggleFocus();
-
