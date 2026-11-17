@@ -38,12 +38,12 @@ function renderLiveViews(){
   $('#controlDetail').innerHTML=$('#agentDetail').innerHTML;
   $('#officeDetail').innerHTML=$('#agentDetail').innerHTML;
   $('#officeSelected').textContent=`${roleList.find(r=>r[0]===selected)[1]}의 작업 기록`;
-  $('#officeRooms').innerHTML=roleList.map(([id,name,job],i)=>{
-    const last=latestAgent(id),state=last?.state||'waiting';
-    return `<button class="office-room room-${id} ${state}" style="--room-accent:${['#c1f879','#dfb173','#66c8be','#afa0d8','#a7c68c','#a1b9ed','#e6be66'][i]}" data-room-agent="${id}" aria-pressed="${selected===id}"><div class="room-header"><strong>${id} <span>${name}</span></strong><small>${esc(labels[state]||state)}</small></div><div class="room-scene" aria-hidden="true"><div class="window-pixels"></div><div class="plant-pixels"></div><div class="pixel-desk"><div class="pixel-monitor"><i></i><i></i><i></i></div><div class="pixel-keyboard"></div><div class="pixel-mug"></div></div><div class="pixel-chair"></div><div class="pixel-agent"><div class="pixel-hair"></div><div class="pixel-face"></div><div class="pixel-body"></div><div class="pixel-arm"></div></div><div class="room-light"></div></div><p class="room-task">${esc(last?.message||job+' · 작업 대기')}</p><span class="room-evidence">${last?`${kst(last.at)} · ${last.evidenceIds?.length?'근거 '+last.evidenceIds.map(esc).join(', '):'실행 기록'}`:'조회·검토 기록이 생기면 표시됩니다.'}</span></button>`;
-  }).join('');
-  $('#officeRooms').querySelectorAll('[data-room-agent]').forEach(b=>b.onclick=()=>chooseViewAgent(b.dataset.roomAgent));
+  window.dispatchEvent(new CustomEvent('verdant:office-update',{detail:{events,selected,running,resultId:result?.id||null,target:{market:$('#market').value,query:$('#query').value,engine:$('#modelMode').value}}}));
 }
 window.addEventListener('desk:update',renderLiveViews);
+window.addEventListener('verdant:office-ready',renderLiveViews);
+window.addEventListener('verdant:office-select',event=>{if(roleList.some(r=>r[0]===event.detail))chooseViewAgent(event.detail)});
+window.addEventListener('verdant:office-run',()=>{if(abort)abort.abort();else $('#runForm').requestSubmit()});
 renderLiveViews();
 if(['control','office'].includes(location.hash.slice(1)))setDeskTab(location.hash.slice(1));
+if(location.pathname==='/office')setDeskTab('office');
