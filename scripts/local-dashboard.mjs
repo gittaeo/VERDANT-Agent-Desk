@@ -6,6 +6,7 @@ import { join, resolve } from 'node:path';
 import { runResearch, ResearchError } from '../lib/market-research.mjs';
 import {createAgentRuntime} from './agent-runtime.mjs';
 import {modelProfiles} from '../lib/model-config.mjs';
+import {createCodexReviewer} from './codex-review.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 try{process.loadEnvFile(join(root,'.env.local'))}catch(error){if(error.code!=='ENOENT')throw error}
@@ -22,7 +23,7 @@ let kisConfig={};
 try{kisConfig=JSON.parse(readFileSync(resolve(root,'..','KIS API.json'),'utf8').replace(/^\uFEFF/,''))}catch{}
 const kisAppKey=process.env.KIS_APP_KEY||kisConfig.appKey;
 const kisAppSecret=process.env.KIS_APP_SECRET||kisConfig.appSecret;
-const agents=createAgentRuntime({root,stockConfig:{key,krxKey,kisAppKey,kisAppSecret,newsClientId,newsClientSecret},profiles:modelProfiles(process.env),worldmonitorUrl:process.env.VERDANT_WORLDMONITOR_URL});
+const agents=createAgentRuntime({root,stockConfig:{key,krxKey,kisAppKey,kisAppSecret,newsClientId,newsClientSecret},profiles:modelProfiles(process.env,{local:true}),batchReviewer:createCodexReviewer({binary:process.env.VERDANT_CODEX_BIN||'codex',model:process.env.VERDANT_CODEX_MODEL}),worldmonitorUrl:process.env.VERDANT_WORLDMONITOR_URL});
 const files = new Map([
   ['/agents', ['web/agents.html','text/html; charset=utf-8']],
   ['/office', ['web/agents.html','text/html; charset=utf-8']],

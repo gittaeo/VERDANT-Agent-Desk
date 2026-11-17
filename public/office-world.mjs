@@ -197,6 +197,7 @@ function toggleFocus(){
   find('officeFullscreen').focus();
 }
 find('officeFullscreen').onclick=toggleFocus;
+window.addEventListener('verdant:office-exit-focus',()=>{if(focusMode)toggleFocus();});
 document.addEventListener('keydown',event=>{if(!focusMode)return;if(event.key==='Escape'){event.preventDefault();toggleFocus()}else if(event.key==='Tab'){
   const buttons=[...find('officePanel').querySelectorAll('button,[tabindex="0"],a[href]')].filter(e=>!e.disabled&&e.getClientRects().length);const first=buttons[0],last=buttons.at(-1);
   if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus()}

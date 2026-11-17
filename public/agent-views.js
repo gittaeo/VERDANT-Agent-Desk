@@ -11,7 +11,9 @@ document.querySelectorAll('[data-tab]').forEach(button=>{
   button.onkeydown=e=>{const names=['research','control','office'],index=names.indexOf(deskTab);if(['ArrowRight','ArrowLeft','Home','End'].includes(e.key)){e.preventDefault();setDeskTab(e.key==='Home'?'research':e.key==='End'?'office':names[(index+(e.key==='ArrowRight'?1:2))%3],true)}};
 });
 document.querySelectorAll('[data-log]').forEach(button=>button.onclick=()=>{logFilter=button.dataset.log;document.querySelectorAll('[data-log]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));renderControlLog()});
-$('#officeEvidenceButton').onclick=()=>{setDeskTab('research');$('#agentDetail').scrollIntoView({block:'center'})};
+$('#officeEvidenceButton').onclick=()=>{window.dispatchEvent(new Event('verdant:office-exit-focus'));setDeskTab('research');$('#agentDetail').scrollIntoView({block:'center'})};
+$('#officeResultsButton').onclick=()=>{window.dispatchEvent(new Event('verdant:office-exit-focus'));setDeskTab('research');$('#results').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});};
+$('#officeConnectButton').onclick=()=>{window.dispatchEvent(new Event('verdant:office-exit-focus'));$('#settingsButton').click();};
 function chooseViewAgent(id){selected=id;renderTeam();renderDetail()}
 function latestAgent(id){return events.findLast(e=>e.agent===id)}
 function renderControlLog(){
@@ -21,6 +23,8 @@ function renderControlLog(){
 }
 function renderLiveViews(){
   const running=Boolean(abort)&&!result;
+ $('#officeResultsButton').disabled=!result||running;
+ $('#officeRunSummary').textContent=running?'실제 자료를 분석하고 있습니다. 완료 결과를 기다려 주세요.':result?result.conclusion+' · '+(result.modelUsage?(result.modelUsage.cached?'Codex 캐시 사용 · 새 토큰 0':'Codex 1회 검토'):'규칙·연결된 엔진 결과'):'분석 대기 · 캐릭터를 선택하면 작업 근거, 완료 후에는 종합 결과를 확인할 수 있습니다.';
   $('#controlLive').textContent=running?'● 실제 분석 중':result?'분석 완료 · 저장된 결과':'분석 대기';
   $('#officeState').textContent=running?'실행 중인 담당자가 작업하고 있습니다':result?'마지막 분석의 작업 상태':'팀 작업 대기';
   const elapsed=events.length>1?Math.max(0,new Date(events.at(-1).at)-new Date(events[0].at)):0;

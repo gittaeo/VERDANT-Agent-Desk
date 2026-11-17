@@ -92,3 +92,7 @@ npm run build
 새 개발 대화에 전달할 요청 예시:
 
 > 이 저장소의 DEVELOPMENT_HANDOFF.md와 README.md, docs/agent-desk.md를 읽고 현재 main의 구현을 확인한 뒤 이어서 개발해 주세요. 연결된 사무실과 실제 이벤트 연동을 유지하세요. 모델 다운로드는 보류된 상태입니다. 필요한 질문은 선택지와 함께 제시해 주세요.
+
+## 2026-11-17 개인 Codex 연결 후속
+
+현재 개발은 docs/codex-personal.md의 로컬 Codex 1회 통합 검토를 포함합니다. 모델 다운로드 보류 결정 유지. Codex 연결은 PC 전용이며 `.env.local`의 VERDANT_CODEX_ENABLED=1과 기존 CLI 로그인으로 사용합니다. 호스팅에 인증 파일을 복사하지 않습니다. 상세한 실측 토큰·호출·검증 한계는 해당 문서를 확인하세요. 자동 테스트 73개 통과.

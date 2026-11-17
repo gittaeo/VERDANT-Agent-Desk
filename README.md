@@ -126,3 +126,11 @@ npm run build
 
 [DEX Screener API](https://docs.dexscreener.com/api/reference) · [Ollama API](https://docs.ollama.com/api/introduction) · [Worldmonitor](https://github.com/koala73/worldmonitor)
 
+
+## Codex 개인 연결 업데이트 · 2026-11-17
+
+PC의 기존 ChatGPT Codex CLI 로그인으로 근거 검토를 연결했습니다. 기본 규칙 검사는 토큰을 쓰지 않으며, Codex 선택 시 압축한 원자료로 3관점 검토를 **한 번** 요청합니다. 동일 자료는 15분 캐시를 재사용하고 실제 사용 토큰을 표시합니다. 로컬 모델 다운로드 없이 사용할 수 있습니다. 호스팅 웹에서는 개인 PC 로그인을 사용할 수 없어 Codex 모드는 비활성화됩니다.
+
+주식 결과에 데이터 조회 범위·실제 종가 흐름·뉴스 상반 근거·다음 확인 조건을 먼저 보여줍니다. 시장 후보에서 기업 상세로 이동할 수 있고, 사무실에 ‘분석 결과 보기’와 ‘연결·엔진 점검’을 추가했습니다. 엔진 점검은 예제 응답·JSON·근거 ID 형식만 확인하며 금융 성과 검증이 아닙니다.
+
+[사용법·토큰 실측·제약·공식 문서](docs/codex-personal.md). 자동 테스트 73개 통과. `Agent-Desk.cmd`는 이전 체크아웃의 서버와 구분하고 충돌 시 다음 포트를 사용합니다.
