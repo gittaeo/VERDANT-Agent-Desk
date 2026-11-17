@@ -28,6 +28,7 @@ const files = new Map([
   ['/agents', ['web/agents.html','text/html; charset=utf-8']],
   ['/office', ['web/agents.html','text/html; charset=utf-8']],
   ['/agents.css', ['public/agents.css','text/css; charset=utf-8']],
+  ['/price-format.js', ['public/price-format.js','application/javascript; charset=utf-8']],
   ['/agents.js', ['public/agents.js','application/javascript; charset=utf-8']],
   ['/agent-views.js', ['public/agent-views.js','application/javascript; charset=utf-8']],
   ['/agent-views.css', ['public/agent-views.css','text/css; charset=utf-8']],
