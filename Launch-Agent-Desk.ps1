@@ -20,7 +20,7 @@ $ready = $false
 for ($offset=0; $offset -lt 10 -and -not $ready; $offset++) {
     $agentPort = $firstPort + $offset
     $agentUrl = "http://127.0.0.1:$agentPort"
-    try { $state = Invoke-RestMethod "$agentUrl/api/desk/status" -TimeoutSec 1; $ready = $state.execution -eq 'local' -and $state.workspaceId -eq $workspaceId -and $state.runtimeVersion -eq 'asset-price-v2' } catch {}
+    try { $state = Invoke-RestMethod "$agentUrl/api/desk/status" -TimeoutSec 1; $ready = $state.execution -eq 'local' -and $state.workspaceId -eq $workspaceId -and $state.runtimeVersion -eq 'studio-design-v3' } catch {}
     if ($ready) { break }
     $listener = [Net.Sockets.TcpListener]::new([Net.IPAddress]::Loopback,$agentPort)
     try { $listener.Start() } catch { continue } finally { $listener.Stop() }
@@ -31,7 +31,7 @@ for ($offset=0; $offset -lt 10 -and -not $ready; $offset++) {
     } finally { $env:VERDANT_PORT = $oldPort }
     for ($attempt=0; $attempt -lt 25; $attempt++) {
         Start-Sleep -Milliseconds 300
-        try { $state = Invoke-RestMethod "$agentUrl/api/desk/status" -TimeoutSec 1; if ($state.workspaceId -eq $workspaceId -and $state.runtimeVersion -eq 'asset-price-v2') { $ready=$true; break } } catch {}
+        try { $state = Invoke-RestMethod "$agentUrl/api/desk/status" -TimeoutSec 1; if ($state.workspaceId -eq $workspaceId -and $state.runtimeVersion -eq 'studio-design-v3') { $ready=$true; break } } catch {}
     }
 }
 if (-not $ready) { throw '서버를 시작하지 못했습니다. 사용 가능한 포트와 .env.local 설정을 확인하세요.' }

@@ -12,6 +12,7 @@ document.querySelectorAll('[data-tab]').forEach(button=>{
 });
 document.querySelectorAll('[data-log]').forEach(button=>button.onclick=()=>{logFilter=button.dataset.log;document.querySelectorAll('[data-log]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));renderControlLog()});
 $('#officeEvidenceButton').onclick=()=>{window.dispatchEvent(new Event('verdant:office-exit-focus'));setDeskTab('research');$('#agentDetail').scrollIntoView({block:'center'})};
+$('#studioOfficeLink').onclick=()=>{setDeskTab('office');$('#officePanel').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});};
 $('#officeResultsButton').onclick=()=>{window.dispatchEvent(new Event('verdant:office-exit-focus'));setDeskTab('research');$('#results').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});};
 $('#officeConnectButton').onclick=()=>{window.dispatchEvent(new Event('verdant:office-exit-focus'));$('#settingsButton').click();};
 function chooseViewAgent(id){selected=id;renderTeam();renderDetail()}

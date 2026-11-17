@@ -27,6 +27,8 @@ const agents=createAgentRuntime({root,stockConfig:{key,krxKey,kisAppKey,kisAppSe
 const files = new Map([
   ['/agents', ['web/agents.html','text/html; charset=utf-8']],
   ['/office', ['web/agents.html','text/html; charset=utf-8']],
+  ['/agent-studio.css', ['public/agent-studio.css','text/css; charset=utf-8']],
+  ['/fonts/PretendardVariable.woff2', ['public/fonts/PretendardVariable.woff2','font/woff2']],
   ['/agents.css', ['public/agents.css','text/css; charset=utf-8']],
   ['/price-format.js', ['public/price-format.js','application/javascript; charset=utf-8']],
   ['/agents.js', ['public/agents.js','application/javascript; charset=utf-8']],

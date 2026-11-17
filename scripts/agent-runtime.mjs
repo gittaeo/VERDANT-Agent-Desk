@@ -23,7 +23,7 @@ export function createAgentRuntime({root,stockConfig,profiles,batchReviewer,worl
       if(!url.pathname.startsWith('/api/desk'))return false;
       const send=(status,data)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(data))};
       try {
-        if(req.method==='GET'&&url.pathname==='/api/desk/status'){send(200,{workspaceId:createHash('sha256').update(root.toLowerCase()).digest('hex').slice(0,12),runtimeVersion:'asset-price-v2',sources:publicSources(stockConfig),model:modelStatus(profiles.rules),models:publicProfiles(profiles),worldmonitorConfigured:Boolean(worldmonitorUrl),roles:7,execution:'local',paper:'observation_only',riskIntervalSeconds:300,background:'로컬 서버 실행 중에만 감시',stockConfigured:Boolean(stockConfig.key)});return true}
+        if(req.method==='GET'&&url.pathname==='/api/desk/status'){send(200,{workspaceId:createHash('sha256').update(root.toLowerCase()).digest('hex').slice(0,12),runtimeVersion:'studio-design-v3',sources:publicSources(stockConfig),model:modelStatus(profiles.rules),models:publicProfiles(profiles),worldmonitorConfigured:Boolean(worldmonitorUrl),roles:7,execution:'local',paper:'observation_only',riskIntervalSeconds:300,background:'로컬 서버 실행 중에만 감시',stockConfigured:Boolean(stockConfig.key)});return true}
         if(req.method==='GET'&&url.pathname==='/api/desk/history'){send(200,await load('history.json',[]));return true}
         if(req.method==='GET'&&/^\/api\/desk\/history\/[a-f0-9-]{36}$/.test(url.pathname)){const r=await load(url.pathname.split('/').at(-1)+'.json',null);send(r?200:404,r||{error:'기록 없음'});return true}
         if(req.method==='GET'&&url.pathname==='/api/desk/paper'){send(200,await paper());return true}

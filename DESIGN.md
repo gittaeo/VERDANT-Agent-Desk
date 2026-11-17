@@ -32,3 +32,7 @@ The rejected leaf is no longer used by the UI. The four reference repositories a
 - https://github.com/collidingScopes/liquid-logo: c733c38a043009b873cb9a6062c0defa9c70ee7d, original fragment shader used in an offscreen render target for the metal material.
 
 Vendor MIT notices are preserved. This is a brand visual, not financial data. Motion toggle, reduced-motion default, capped pixel density, offscreen unmounting and a plain V fallback protect the research UI. npm run build:visual rebuilds the committed client bundle; the main build includes it.
+
+## Agent Desk extension
+
+The `/agents` studio extends this established forest world in operate mode; it is not a new concept direction. `public/agent-studio.css` follows the incumbent styles and introduces scoped studio tokens, locally served Pretendard Variable, a pale research form and stock digest, aligned evidence cards, and a responsive navigation shell. The existing real WebGL V and connected office remain part of the experience. [Implementation and validation scope](docs/agent-studio-design.md) records the Agent Desk-specific scale and evidence without replacing the main dashboard rules above.

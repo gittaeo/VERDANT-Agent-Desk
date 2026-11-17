@@ -1,0 +1,22 @@
+{
+  "disposition": "ship",
+  "date": "2026-11-17",
+  "skill": "https://github.com/pbakaus/impeccable",
+  "scope": [
+    "1440x1000 desktop empty",
+    "1440x1000 actual BONK results",
+    "390x844 mobile",
+    "361x800 user viewport"
+  ],
+  "limitations": [
+    "Reviewer inspected supplied screenshots and source, not independent browser interactions.",
+    "Static detector could not resolve root-relative stylesheets; its flat-type warning is contradicted by rendered/computed heading hierarchy."
+  ],
+  "checks": {
+    "tests": 79,
+    "failed": 0,
+    "browserErrors": 0,
+    "llmCallsForThisUIWork": 0
+  },
+  "postReview": "Evidence citation handler added and confirmed opening matching source disclosure; reviewer retained ship."
+}
